@@ -19,7 +19,10 @@
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
-                        <li><a class="dropdown-item" href="#">Изменить личные данные</a></li>
+                          {% if user.is_staff %}
+                              <li><a class="dropdown-item" href="{% url 'all_orders' %}">Все заказы</a></li>
+                          {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'my_orders' %}">Мои заказы</a></li>
                         <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
                       </ul>
                     </li>

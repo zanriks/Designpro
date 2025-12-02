@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm, OrderForm
+from django.core.paginator import Paginator
 from django.contrib.auth import login, logout, authenticate
 from .models import Order
 
@@ -77,6 +78,15 @@ def my_orders_view(request):
         'orders': orders,
         'selected_status': status,
         'status_choices': status_choices,
+    })
+
+@login_required
+def all_orders_view(request):
+    orders = Order.objects.all()
+    paginate_by = 3
+
+    return render(request, 'users/all_orders.html', {
+        'orders': orders,
     })
 
 @login_required
