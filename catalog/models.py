@@ -51,7 +51,7 @@ class Order(models.Model):
     description = models.TextField(verbose_name='Описание')
     category = models.ForeignKey(
         Category,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name='Категория'
     )
     image = models.ImageField(
