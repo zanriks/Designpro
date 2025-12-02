@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Order
 from django.contrib.auth.forms import UserCreationForm
 
 class CustomUserCreationForm(UserCreationForm):
@@ -26,4 +26,10 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
-# class OrdersForm(forms.ModelForm):
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['name', 'description', 'category', 'image']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+        } #dwa
