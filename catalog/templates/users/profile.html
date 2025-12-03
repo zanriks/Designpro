@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Профиль пользователя</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Добрый день {{ user.full_name }}!</h5>
+            <p class="card-text">
+                <strong>Имя пользователя:</strong> {{ user.username }}<br>
+                <strong>Email:</strong> {{ user.email }}<br>
+                <strong>Согласие на обработку ПД:</strong> {% if user.agreement %}Да{% else %}Нет{% endif %}<br>
+                <a class="btn btn-success" href="{% url 'my_orders' %}" style="margin-top: 20px">Мои заявки</a>
+            </p>
+        {% if user.is_staff %}
+            <a class="nav-link" href="{% url 'all_orders' %}">Сменить статус заявки</a>
+            <a class="nav-link" href="{% url 'category_management' %}">Управление категориями заявок</a>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

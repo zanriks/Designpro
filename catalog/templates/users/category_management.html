@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Управление категориями{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Управление категориями заявок</h2>
+
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Добавить категорию</button>
+    </form>
+
+    <h3>Существующие категории</h3>
+    {% if categories %}
+        <ul class="list-group">
+            {% for cat in categories %}
+                <li class="list-group-item">
+                    {{ cat.name }}
+                    <form method="post" action="{% url 'category_delete' cat.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" style="float: right;">Удалить</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет созданных категорий.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h4>Подтвердите удаление заявки</h4>
+        </div>
+        <div class="card-body">
+            <p>Вы уверены, что хотите удалить заявку:</p>
+            <h5 class="text-danger">{{ order.name }}</h5>
+            <p class="text-muted">Это действие нельзя отменить.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'my_orders' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Заявка: {{ order.name }}{% endblock %}
+
+{% block content %}
+  <h2>Детали заявки: "{{ order.name }}"</h2>
+
+  <div class="order-info">
+    <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Категория:</strong> {{ order.category.name }}</p>
+    <p><strong>Автор:</strong> {{ order.user.full_name }} ({{ order.user.username }})</p>
+    <p><strong>Дата создания:</strong> {{ order.timestamp|date:"d.m.Y H:i" }}</p>
+
+    <h3>Описание</h3>
+    <p>{{ order.description }}</p>
+
+    {% if order.image %}
+      <h3>Фото помещения / план</h3>
+      <img src="{{ order.image.url }}" alt="Фото помещения" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
+    {% endif %}
+
+    {% if order.status == 'in_progress' and order.status_comment %}
+      <h3>Комментарий («Принято в работу»)</h3>
+      <blockquote>{{ order.status_comment }}</blockquote>
+    {% endif %}
+
+    {% if order.status == 'completed' and order.design_image %}
+      <h3>Изображение дизайна</h3>
+      <img src="{{ order.design_image.url }}" alt="Дизайн" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
+    {% endif %}
+  </div>
+
+  <div class="order-actions" style="margin-top: 20px;">
+    {% if order.status == 'new' %}
+      <a href="{% url 'change_status_order' order.id %}" class="btn btn-primary">Сменить статус</a>
+    {% endif %}
+
+    {% if order.user == user and order.status == 'new' %}
+      <a href="{% url 'delete_order' order.id %}" class="btn btn-danger" style="margin-left: 10px;">Удалить</a>
+    {% endif %}
+
+    <a href="{% url 'my_orders' %}" class="btn btn-secondary" style="margin-left: 10px;">Назад к заявкам</a>
+  </div>
+{% endblock %}

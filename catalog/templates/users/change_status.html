@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Мои заявки{% endblock %}
+
+{% block content %}
+<h2>Смена статуса заявки: {{ order.name }}</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <h3>Вариант 1: Принять в работу</h3>
+    <label>Комментарий:</label>
+    <textarea name="comment" rows="3" placeholder="Обязательный комментарий"></textarea>
+    <input type="hidden" name="status" value="in_progress">
+    <button type="submit">Принять в работу</button>
+</form>
+
+<form method="post" enctype="multipart/form-data" style="margin-top: 30px;">
+    {% csrf_token %}
+    <h3>Вариант 2: Отметить как выполненное</h3>
+    <label>Загрузите изображение дизайна:</label>
+    <input type="file" name="design_image" accept="image/*" required>
+    <input type="hidden" name="status" value="completed">
+    <button type="submit">Отметить как выполненное</button>
+</form>
+
+<a href="{% url 'my_orders' %}">Назад к заявкам</a>
+{% endblock %}
