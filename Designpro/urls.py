@@ -26,3 +26,4 @@ urlpatterns = [
     path('catalog/', RedirectView.as_view(url='/', permanent=True)),  # перенаправляет catalog/ на главную
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
