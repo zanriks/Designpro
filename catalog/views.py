@@ -10,13 +10,13 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 def index(request):
-    num_status = Order.objects.filter(status = 'in_progress').count()
+    num_status = Order.objects.filter(status=Order.STATUS_IN_PROGRESS).count()
+    last_orders = Order.objects.filter(status=Order.STATUS_COMPLETED).order_by('-timestamp')[:4]
 
-    context = {
+    return render(request, 'index.html', {
         'num_status': num_status,
-    }
-
-    return render(request, 'index.html', context)
+        'last_orders': last_orders,
+    })
 
 def register_view(request):
     if request.method == 'POST':
@@ -129,20 +129,6 @@ def delete_order(request, order_id):
         return redirect('my_orders')
 
     return render(request, 'users/confirm_delete_order.html', {'order': order})
-
-
-def last_orders_view(request):
-    last_orders = Order.objects.order_by('timestamp')
-    last_four_orders = last_orders[:4]
-
-    if last_four_orders.status == 'STATUS_COMPLETED':
-
-
-    context = {
-        'orders': last_four_orders,
-    }
-
-    return render(request, 'index.html', context)
 
 @login_required
 def change_status_view(request, order_id):

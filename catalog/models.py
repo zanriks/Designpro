@@ -60,6 +60,13 @@ class Order(models.Model):
         validators=[validate_image_file],
         verbose_name='Фото помещения или план',
     )
+    design_image = models.ImageField(
+        upload_to='catalog/designs/',
+        validators=[validate_image_file],
+        verbose_name='Изображение дизайна',
+        blank=True,
+        null=True,
+    )
     timestamp = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
     status = models.CharField(
         max_length=20,

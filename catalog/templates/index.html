@@ -7,13 +7,17 @@
     <p>Добро пожаловать на сайт!</p>
     <p>Количество заявок со статусом "Принято в работу: "{{ num_status }}</p>
     
-    <h1>Все заказы</h1>
-    {% if orders %}
+    <h1>Все выполненые заявки</h1>
+    {% if last_orders %}
         <div class="row">
-            {% for order in orders %}
+            {% for order in last_orders %}
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100 shadow-sm">
-                    {% if order.image %}
+                    {% if order.design_image %}
+                        <a href="{% url 'order_detail' order.id %}" class="d-block" style="text-decoration: none; color: inherit;">
+                            <img src="{{ order.design_image.url }}" class="card-img-top" alt="{{ order.name }}" style="object-fit: cover; height: 200px; cursor: pointer;">
+                        </a>
+                    {% elif order.image %}
                         <a href="{% url 'order_detail' order.id %}" class="d-block" style="text-decoration: none; color: inherit;">
                             <img src="{{ order.image.url }}" class="card-img-top" alt="{{ order.name }}" style="object-fit: cover; height: 200px; cursor: pointer;">
                         </a>
@@ -48,7 +52,7 @@
         </div>
     {% else %}
         <div class="alert alert-info">
-            Пока нет заявок.
+            Нет выполненных заявок.
         </div>
     {% endif %}
 {% endblock %}
