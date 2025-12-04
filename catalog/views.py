@@ -213,4 +213,4 @@ def delete_category_view(request, category_id):
     if request.method == 'POST':
         category.delete()
         messages.success(request, "Категория успешно удалена!")
-        return redirect('category_management') #dwdw
+        return redirect('category_management') #dwdwdwd

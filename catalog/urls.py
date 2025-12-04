@@ -16,4 +16,4 @@ urlpatterns = [
     path('order/<int:order_id>/', views.order_detail_view, name='order_detail'),
     path('add_category/', views.category_management_view, name='category_management'),
     path('delete_category/<int:category_id>/', views.delete_category_view, name='category_delete'),
-]#e
+]#edwda
