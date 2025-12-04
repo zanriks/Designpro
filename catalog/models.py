@@ -75,5 +75,6 @@ class Order(models.Model):
         verbose_name='Статус'
     )
 
+    #self (ссылка на текущий экземпляр объекта)
     def __str__(self):
-        return self.name #dwdaw
+        return self.name # Возвращает значение поля name этого объекта в виде строки

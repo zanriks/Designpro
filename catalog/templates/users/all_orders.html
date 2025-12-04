@@ -2,6 +2,23 @@
 {% block title %}Список заказов{% endblock %}
 {% block content %}
     <h1>Все заявки</h1>
+    
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="status">Фильтр по статусу:</label>
+                <select name="status" id="status" class="form-control" onchange="this.form.submit()">
+                    <option value="">Все статусы</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+    
 {% if orders %}
         <div class="row">
             {% for order in orders %}

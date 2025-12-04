@@ -70,6 +70,22 @@ def logout_view(request):
     return redirect('login')
 
 @login_required
+def create_order_view(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+            messages.success(request, "Заказ успешно создан!")
+            return redirect('my_orders')
+        else:
+            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+    else:
+        form = OrderForm()
+    return render(request, 'users/create_order.html', {'form': form})
+
+@login_required
 def my_orders_view(request):
     orders = Order.objects.filter(user=request.user)
 
@@ -86,30 +102,6 @@ def my_orders_view(request):
         'selected_status': status,
         'status_choices': status_choices,
     })
-
-@login_required
-def all_orders_view(request):
-    orders = Order.objects.all()
-
-    return render(request, 'users/all_orders.html', {
-        'orders': orders,
-    })
-
-@login_required
-def create_order_view(request):
-    if request.method == 'POST':
-        form = OrderForm(request.POST, request.FILES)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
-            order.save()
-            messages.success(request, "Заказ успешно создан!")
-            return redirect('my_orders')
-        else:
-            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
-    else:
-        form = OrderForm()
-    return render(request, 'users/create_order.html', {'form': form})
 
 @login_required
 def delete_order(request, order_id):
@@ -131,11 +123,29 @@ def delete_order(request, order_id):
     return render(request, 'users/confirm_delete_order.html', {'order': order})
 
 @login_required
+def all_orders_view(request):
+    orders = Order.objects.all()
+
+    status = request.GET.get('status')
+    if status in dict(Order.STATUS_CHOICES):
+        orders = orders.filter(status=status)
+
+    orders = orders.order_by('-timestamp')
+
+    status_choices = Order.STATUS_CHOICES
+
+    return render(request, 'users/all_orders.html', {
+        'orders': orders,
+        'selected_status': status,
+        'status_choices': status_choices,
+    })
+
+@login_required
 def change_status_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
-    # Только администратор или автор может менять статус
-    if not request.user.is_staff and order.user != request.user:
+    # Только администратор может менять статус
+    if not request.user.is_staff:
         messages.error(request, "У вас нет прав на изменение этой заявки.")
         return redirect('my_orders')
 
