@@ -31,7 +31,7 @@
   </div>
 
   <div class="order-actions" style="margin-top: 20px;">
-    {% if order.status == 'new' %}
+    {% if order.status == 'new' and user.is_staff%}
       <a href="{% url 'change_status_order' order.id %}" class="btn btn-primary">Сменить статус</a>
     {% endif %}
 
