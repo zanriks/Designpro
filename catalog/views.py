@@ -1,29 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-<<<<<<< HEAD
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm, CategoryForm ,OrderForm
-from django.contrib.auth import login, logout, authenticate
 from .models import Order, Category
-=======
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm, OrderForm
 from django.contrib.auth import login, logout, authenticate
 from .models import Order
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 def index(request):
-<<<<<<< HEAD
     num_status = Order.objects.filter(status = 'in_progress').count()
 
-    return render(request, 'index.html', {'num_status': num_status})
-=======
-    return render(request, 'index.html')
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
+    context = {
+        'num_status': num_status,
+    }
+
+    return render(request, 'index.html', context)
 
 def register_view(request):
     if request.method == 'POST':
@@ -47,7 +40,6 @@ def register_view(request):
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
-
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -69,28 +61,9 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
-<<<<<<< HEAD
     return render(request, 'users/profile.html')
 
 @login_required
-=======
-    orders = Order.objects.filter(user=request.user)
-
-    status = request.GET.get('status')
-    if status in dict(Order.STATUS_CHOICES):
-        orders = orders.filter(status=status)
-
-    orders = orders.order_by('-timestamp')
-
-    status_choices = Order.STATUS_CHOICES
-
-    return render(request, 'users/profile.html', {
-        'orders': orders,
-        'selected_status': status,
-        'status_choices': status_choices,
-    })
-
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 def logout_view(request):
     logout(request)
     messages.success(request, 'Вы успешно вышли из системы.')
@@ -117,10 +90,6 @@ def my_orders_view(request):
 @login_required
 def all_orders_view(request):
     orders = Order.objects.all()
-<<<<<<< HEAD
-=======
-    paginate_by = 3
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 
     return render(request, 'users/all_orders.html', {
         'orders': orders,
@@ -156,21 +125,27 @@ def delete_order(request, order_id):
 
     if request.method == 'POST':
         order.delete()
-<<<<<<< HEAD
         messages.success(request, "Заявка успешно удалена!")
-=======
-        messages.success(request, "Заказ успешно удалён!")
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
         return redirect('my_orders')
 
     return render(request, 'users/confirm_delete_order.html', {'order': order})
 
+
+def last_orders_view(request):
+    last_orders = Order.objects.order_by('timestamp')
+    last_four_orders = last_orders[:4]
+
+    if last_four_orders.status == 'STATUS_COMPLETED':
+
+
+    context = {
+        'orders': last_four_orders,
+    }
+
+    return render(request, 'index.html', context)
+
 @login_required
-<<<<<<< HEAD
 def change_status_view(request, order_id):
-=======
-def change_status_order(request, order_id):
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
     order = get_object_or_404(Order, id=order_id)
 
     # Только администратор или автор может менять статус
@@ -191,11 +166,7 @@ def change_status_order(request, order_id):
         if new_status == Order.STATUS_IN_PROGRESS:
             if not comment:
                 messages.error(request, "Требуется указать комментарий при смене статуса на «Принято в работу».")
-<<<<<<< HEAD
                 return redirect('change_status', order_id=order.id)
-=======
-                return redirect('change_status_order', order_id=order.id)
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 
             order.status = Order.STATUS_IN_PROGRESS
             order.status_comment = comment
@@ -206,11 +177,7 @@ def change_status_order(request, order_id):
         elif new_status == Order.STATUS_COMPLETED:
             if not design_image:
                 messages.error(request, "Требуется прикрепить изображение дизайна при смене статуса на «Выполнено».")
-<<<<<<< HEAD
                 return redirect('change_status', order_id=order.id)
-=======
-                return redirect('change_status_order', order_id=order.id)
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 
             order.status = Order.STATUS_COMPLETED
             order.design_image = design_image
@@ -220,18 +187,14 @@ def change_status_order(request, order_id):
 
         else:
             messages.error(request, "Недопустимый статус.")
-<<<<<<< HEAD
             return redirect('change_status', order_id=order.id)
-=======
-            return redirect('change_status_order', order_id=order.id)
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 
     return render(request, 'users/change_status.html', {'order': order})
 
+@login_required
 def order_detail_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
-<<<<<<< HEAD
     if order.user != request.user and not request.user.is_staff:
         messages.error(request, "У вас нет прав для просмотра этой заявки.")
         return HttpResponseRedirect(reverse('my_orders'))
@@ -266,14 +229,9 @@ def category_management_view(request):
 def delete_category_view(request, category_id):
     category = get_object_or_404(Category, id=category_id)
 
+
     if request.method == 'POST':
         category.delete()
-        messages.success(request, "Категория успешно удалена!")
-        return redirect('category_management') #dwdwdwd
-=======
-    if order.user != request.user and not request.user.is_staff and not request.user.is_superuser:
-        messages.error(request, "У вас нет прав для просмотра этой заявки.")
-        return HttpResponseRedirect(reverse('my_orders'))
 
-    return render(request, 'users/order_detail.html', {'order': order})
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
+        messages.success(request, "Категория успешно удалена!")
+        return redirect('category_management')

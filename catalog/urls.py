@@ -12,14 +12,8 @@ urlpatterns = [
     path('my_orders/', views.my_orders_view, name='my_orders'),
     path('order/<int:order_id>/delete/', views.delete_order, name='delete_order'),
     path('all_orders/', views.all_orders_view, name='all_orders'),
-<<<<<<< HEAD
     path('order/<int:order_id>/change-status/', views.change_status_view, name='change_status_order'),
     path('order/<int:order_id>/', views.order_detail_view, name='order_detail'),
     path('add_category/', views.category_management_view, name='category_management'),
     path('delete_category/<int:category_id>/', views.delete_category_view, name='category_delete'),
-]#edwda
-=======
-    path('order/<int:order_id>/change-status/', views.change_status_order, name='change_status_order'),
-    path('order/<int:order_id>/', views.order_detail_view, name='order_detail'),
 ]
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f

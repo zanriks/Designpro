@@ -1,9 +1,6 @@
 from django import forms
-<<<<<<< HEAD
 from .models import User, Order, Category
-=======
 from .models import User, Order
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
 from django.contrib.auth.forms import UserCreationForm
 
 class CustomUserCreationForm(UserCreationForm):
@@ -36,13 +33,9 @@ class OrderForm(forms.ModelForm):
         fields = ['name', 'description', 'category', 'image']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
-<<<<<<< HEAD
-        } #dwa
+        }
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name'] #wawdaw
-=======
-        } #dwa
->>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
+        fields = ['name']
