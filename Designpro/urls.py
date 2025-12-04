@@ -21,9 +21,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+<<<<<<< HEAD
     path('superadmin/', admin.site.urls),
     path('', include('catalog.urls')),
     path('catalog/', RedirectView.as_view(url='/', permanent=True)),  # перенаправляет catalog/ на главную
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+=======
+    path('admin/', admin.site.urls),
+    path('', include('catalog.urls')),
+    path('catalog/', RedirectView.as_view(url='/', permanent=True)),  # перенаправляет catalog/ на главную
+]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+>>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f

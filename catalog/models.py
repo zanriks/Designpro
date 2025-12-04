@@ -47,7 +47,10 @@ class Order(models.Model):
         verbose_name='Пользователь',
         related_name='orders'
     )
+<<<<<<< HEAD
 
+=======
+>>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
     name = models.CharField(max_length=100, verbose_name='Название')
     description = models.TextField(verbose_name='Описание')
     category = models.ForeignKey(
@@ -69,4 +72,8 @@ class Order(models.Model):
     )
 
     def __str__(self):
+<<<<<<< HEAD
         return self.name #dwdaw
+=======
+        return self.name #dwawd
+>>>>>>> ad4f492cb6b120295611577e997eabf3450ebd1f
